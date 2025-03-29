@@ -35,4 +35,9 @@ public class Customer extends User{
     public boolean isLoggedIn(){
         return loggedIn;
     }
+    
+    public void setPoints(int points){
+        this.points = points;
+    }
+    
 }
