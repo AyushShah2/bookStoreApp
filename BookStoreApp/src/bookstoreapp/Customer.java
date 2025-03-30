@@ -7,11 +7,13 @@ package bookstoreapp;
  */
 public class Customer extends User{
     private int points;
+    private Status status;
     
     Customer(String username, String password){
         points = 0;
         this.username = username;
         this.password = password;
+        this.status = new SilverStatus();
     }
     
     @Override
@@ -42,10 +44,24 @@ public class Customer extends User{
     
     public void setPoints(int points){
         this.points = points;
+        if (points < 1000){
+            this.status = new SilverStatus();   
+        }
+        else{
+            this.status = new GoldStatus();
+        }
     }
     
     public int getPoints(){
         return points;
+    }
+    
+    public Status getStatus(){
+        return status;
+    }
+    
+    public void setStatus(Status status){
+        this.status = status;
     }
     
 }

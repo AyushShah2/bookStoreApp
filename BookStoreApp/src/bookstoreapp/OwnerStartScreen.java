@@ -13,9 +13,9 @@ import javafx.stage.Stage;
  * @author user
  */
 public class OwnerStartScreen extends Application {
-    private static User currentUser;
+    private static Owner currentUser;
     
-    public static void setUser(User user){
+    public static void setUser(Owner user){
         currentUser = user;
     }
     
@@ -29,7 +29,7 @@ public class OwnerStartScreen extends Application {
         booksButton.setOnAction(e -> goToBooks(ownerStage));
         
         Button customersButton = new Button("Customers");
-        //customersButton.setOnAction(e -> goToCustomers());
+        customersButton.setOnAction(e -> goToCustomers(ownerStage));
         
         Button logoutButton = new Button("Logout");
         logoutButton.setOnAction(e -> logoutOwner(ownerStage));
@@ -51,9 +51,15 @@ public class OwnerStartScreen extends Application {
     }
     
     private void goToBooks(Stage currentStage){
-        OwnerBooksScreen ownerbooksscreen = new OwnerBooksScreen();
+        OwnerBooksScreen ownerBooksScreen = new OwnerBooksScreen();
         bookstoreapp.FileHandler.getBookListFromFile();
-        ownerbooksscreen.start(currentStage);
+        ownerBooksScreen.start(currentStage);
+    }
+    
+    private void goToCustomers(Stage currentStage){
+        OwnerCustomersScreen ownerCustomersScreen = new OwnerCustomersScreen();
+        bookstoreapp.FileHandler.getCustomerListFromFile();
+        ownerCustomersScreen.start(currentStage);
     }
     
     private void logoutOwner(Stage currentStage){  

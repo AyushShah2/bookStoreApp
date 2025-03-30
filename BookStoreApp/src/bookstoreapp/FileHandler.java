@@ -38,6 +38,7 @@ public class FileHandler {
             bookList = new ArrayList<Book>();
         }
         try {
+            
             Scanner scanner = new Scanner(new File("books.txt"));
             while(scanner.hasNextLine()){
                 String bookName = scanner.nextLine();
@@ -54,6 +55,9 @@ public class FileHandler {
             alert.setTitle("ERROR");
             alert.setHeaderText("books.txt not found");
             alert.showAndWait();
+        }
+        catch(NoSuchElementException e){
+            System.out.println("\nNo Books In Store");
         }
     }
     
@@ -96,6 +100,10 @@ public class FileHandler {
     
     
     public static void getCustomerListFromFile(){
+        if(!customerList.isEmpty()){
+            customerList = new ArrayList<Customer>();
+        }
+        
         try {
             Scanner scanner = new Scanner(new File("customers.txt"));
             while(scanner.hasNextLine()){
@@ -115,6 +123,9 @@ public class FileHandler {
             alert.setTitle("ERROR");
             alert.setHeaderText("customers.txt not found");
             alert.showAndWait();
+        }
+        catch(NoSuchElementException e){
+            System.out.println("\nNo Customers Currently Registered");
         }
     }
     

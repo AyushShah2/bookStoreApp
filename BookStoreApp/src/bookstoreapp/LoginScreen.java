@@ -63,7 +63,7 @@ public class LoginScreen extends Application {
                 Stage ownerStage = (Stage) usernameField.getScene().getWindow();
                 
                 OwnerStartScreen ownerStartScreen = new OwnerStartScreen();
-                ownerStartScreen.setUser(currentUser);
+                ownerStartScreen.setUser((Owner) currentUser);
                 ownerStartScreen.start(ownerStage);
             }
         }
@@ -72,8 +72,15 @@ public class LoginScreen extends Application {
             currentUser.login(username, password);
 
             if(currentUser.isLoggedIn()){
-                messageLabel.setText("Login successful as " + username); //ADD IMPLEMENTATION TO GO TO CUSTOMER PAGE
+                bookstoreapp.FileHandler.getBookListFromFile();
+                messageLabel.setText("Login successful as " + username);
                 System.out.print("Logged in as " + username);
+                
+                Stage customerStage = (Stage) usernameField.getScene().getWindow();
+                
+                CustomerStartScreen customerStartScreen = new CustomerStartScreen();
+                customerStartScreen.setUser((Customer) currentUser);
+                customerStartScreen.start(customerStage);
             }
         } 
         else {
