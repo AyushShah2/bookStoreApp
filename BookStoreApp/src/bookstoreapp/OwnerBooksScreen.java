@@ -15,7 +15,7 @@ import javafx.scene.layout.Region;
 
 /**
  *
- * @author user
+ * @author Ayush Shah
  */
 public class OwnerBooksScreen extends Application {
 
@@ -24,6 +24,7 @@ public class OwnerBooksScreen extends Application {
     
     private TextField nameField = new TextField();
     private TextField priceField = new TextField();
+    private Label errorLabel;
 
     @Override
     public void start(Stage primaryStage) {
@@ -33,13 +34,16 @@ public class OwnerBooksScreen extends Application {
         Button backButton = new Button("Back");
 
         Label label = new Label("Books in Store");
-        label.setFont(new Font("Arial", 24));
+        label.setFont(new Font("Arial", 24));    
         
         Region invisibleSpace = new Region();
         invisibleSpace.setPrefWidth(300);
         
         Region invisibleSpace2 = new Region();
         invisibleSpace2.setPrefWidth(300);
+        
+        errorLabel = new Label();
+        errorLabel.setStyle("-fx-text-fill: red;");
         
         TableColumn<Book, String> nameColumn = new TableColumn<>("Book Name");
         nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBookName()));
@@ -61,6 +65,9 @@ public class OwnerBooksScreen extends Application {
         
         HBox middleBox = new HBox(10, nameField, priceField, addButton);
         middleBox.setAlignment(Pos.CENTER);
+        
+        VBox middleBoxWithLabel = new VBox(10, errorLabel, middleBox);
+        middleBoxWithLabel.setAlignment(Pos.CENTER);
 
         addButton.setOnAction(e -> addBook());
         
@@ -71,7 +78,7 @@ public class OwnerBooksScreen extends Application {
         
         bottomBox.setAlignment(Pos.CENTER);
 
-        VBox vbox = new VBox(40, label, topBox, middleBox, bottomBox);
+        VBox vbox = new VBox(40, label, topBox, middleBoxWithLabel, bottomBox);
         vbox.setAlignment(Pos.CENTER);
 
         bookTable.setPrefHeight(200);
@@ -89,15 +96,22 @@ public class OwnerBooksScreen extends Application {
         double price = 0;
 
         try {
+            if(name.trim().equals("")){
+                throw new Exception();
+            }
             price = Double.parseDouble(priceText);
             
             Book newBook = new Book(name, price);
             bookstoreapp.FileHandler.addBook(newBook);
             bookTable.getItems().add(newBook);
             bookstoreapp.FileHandler.saveBookListToFile();
-        } catch (NumberFormatException e) {
-            showAlert("Invalid Price", "Please enter a valid number for price.");
-            return;
+        } catch (Exception e) {
+            if (e instanceof NumberFormatException){
+                errorLabel.setText("Enter a Valid Number");
+            }
+            else{
+                errorLabel.setText("Enter a Proper Name");
+            }
         }
         
         nameField.clear();
@@ -113,7 +127,7 @@ public class OwnerBooksScreen extends Application {
             bookstoreapp.FileHandler.saveBookListToFile();
         }
         else{
-            showAlert("No Book Selected", "Please select a book to delete.");
+            errorLabel.setText("Select a Book to Delete");
         }
         
         
@@ -124,13 +138,6 @@ public class OwnerBooksScreen extends Application {
         ownerStartScreen.start(currentStage);
     }
     
-    
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setContentText(message);
-        alert.show();
-    }
 
     public static void main(String[] args) {
         launch(args);

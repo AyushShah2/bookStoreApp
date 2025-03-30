@@ -10,22 +10,21 @@ import javafx.scene.layout.Region;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.control.cell.CheckBoxTableCell;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.BooleanProperty;
 import javafx.geometry.Pos;
 import java.util.stream.Collectors;
 
 /**
  *
- * @author user
+ * @author Ayush Shah
  */
 public class CustomerStartScreen extends Application {
     private static Customer currentUser;
     private TableView<Book> bookTable = new TableView<>();
     private ArrayList<Book> data = bookstoreapp.FileHandler.getBookList();
     ArrayList<Book> selectedBooks = new ArrayList<>(data.stream().filter(Book::isSelected).collect(Collectors.toList()));
+    private Label errorLabel;
     
     public static void setUser(Customer user){
         currentUser = user;
@@ -46,6 +45,9 @@ public class CustomerStartScreen extends Application {
         Region invisibleSpace2 = new Region();
         invisibleSpace2.setPrefWidth(300);
         
+        errorLabel = new Label();
+        errorLabel.setStyle("-fx-text-fill: red;");
+        
         bookTable.setEditable(true);
         
         TableColumn<Book, Boolean> selectColumn = new TableColumn<>("Select");
@@ -59,9 +61,9 @@ public class CustomerStartScreen extends Application {
         TableColumn<Book, Double> priceColumn = new TableColumn<>("Price");
         priceColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getBookPrice()).asObject());
 
-        selectColumn.setPrefWidth(80);
-        nameColumn.setPrefWidth(150);
-        priceColumn.setPrefWidth(90);
+        selectColumn.setPrefWidth(55);
+        nameColumn.setPrefWidth(133);
+        priceColumn.setPrefWidth(81);
         
         bookTable.getColumns().addAll(nameColumn, priceColumn, selectColumn);
         bookTable.getItems().addAll(data);
@@ -88,7 +90,10 @@ public class CustomerStartScreen extends Application {
         HBox bottomBox = new HBox(20, buyBookButton, buyBookWithPointsButton, logoutButton);
         bottomBox.setAlignment(Pos.CENTER);
         
-        VBox layout = new VBox(20, message, label, topBox, bottomBox);
+        VBox bottomBoxWithLabel = new VBox(10, errorLabel, bottomBox);
+        bottomBoxWithLabel.setAlignment(Pos.CENTER);
+        
+        VBox layout = new VBox(20, message, label, topBox, bottomBoxWithLabel);
         layout.setStyle("-fx-padding: 20; -fx-alignment: center;"); 
         
         
@@ -108,10 +113,15 @@ public class CustomerStartScreen extends Application {
         return selectedBooks;
     }
     
-    private void buyBooks(Stage currentStage, ArrayList<Book> selectedBooks, boolean buyWithPoints){              
-        CustomerCostScreen customerCostScreen = new CustomerCostScreen();
-        customerCostScreen.purchaseInfo((Customer) currentUser, selectedBooks, buyWithPoints);
-        customerCostScreen.start(currentStage);
+    private void buyBooks(Stage currentStage, ArrayList<Book> selectedBooks, boolean buyWithPoints){
+        if(selectedBooks.isEmpty()){
+            errorLabel.setText("Select a Book to Purchase");
+        }
+        else{
+            CustomerCostScreen customerCostScreen = new CustomerCostScreen();
+            customerCostScreen.purchaseInfo((Customer) currentUser, selectedBooks, buyWithPoints);
+            customerCostScreen.start(currentStage);
+        }
     }
     
     

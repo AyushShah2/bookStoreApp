@@ -15,7 +15,7 @@ import javafx.scene.layout.Region;
 
 /**
  *
- * @author user
+ * @author Ayush Shah
  */
 public class OwnerCustomersScreen extends Application {
 
@@ -24,6 +24,8 @@ public class OwnerCustomersScreen extends Application {
     
     private TextField usernameField = new TextField();
     private TextField passwordField = new TextField();
+    
+    private Label errorLabel;
 
     @Override
     public void start(Stage primaryStage) {
@@ -34,6 +36,9 @@ public class OwnerCustomersScreen extends Application {
 
         Label label = new Label("Customers");
         label.setFont(new Font("Arial", 24));
+        
+        errorLabel = new Label();
+        errorLabel.setStyle("-fx-text-fill: red;");
         
         Region invisibleSpace = new Region();
         invisibleSpace.setPrefWidth(230);
@@ -65,6 +70,9 @@ public class OwnerCustomersScreen extends Application {
         
         HBox middleBox = new HBox(10, usernameField, passwordField, addButton);
         middleBox.setAlignment(Pos.CENTER);
+        
+        VBox middleBoxWithLabel = new VBox(10, errorLabel, middleBox);
+        middleBoxWithLabel.setAlignment(Pos.CENTER);
 
         addButton.setOnAction(e -> addCustomer());
         
@@ -75,7 +83,7 @@ public class OwnerCustomersScreen extends Application {
         
         bottomBox.setAlignment(Pos.CENTER);
 
-        VBox vbox = new VBox(40, label, topBox, middleBox, bottomBox);
+        VBox vbox = new VBox(40, label, topBox, middleBoxWithLabel, bottomBox);
         vbox.setAlignment(Pos.CENTER);
 
         customerTable.setPrefHeight(200);
@@ -91,11 +99,18 @@ public class OwnerCustomersScreen extends Application {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        
-        Customer newCustomer = new Customer(username, password);
-        bookstoreapp.FileHandler.addCustomer(newCustomer);
-        customerTable.getItems().add(newCustomer);
-        bookstoreapp.FileHandler.saveCustomerListToFile();
+        if(username.trim().equals("")){
+            errorLabel.setText("Enter a Username");        
+        }
+        else if(password.trim().equals("")){
+            errorLabel.setText("Enter a Password");
+        }
+        else{
+            Customer newCustomer = new Customer(username, password);
+            bookstoreapp.FileHandler.addCustomer(newCustomer);
+            customerTable.getItems().add(newCustomer);
+            bookstoreapp.FileHandler.saveCustomerListToFile();
+        }
         
         usernameField.clear();
         passwordField.clear();
@@ -110,7 +125,7 @@ public class OwnerCustomersScreen extends Application {
             bookstoreapp.FileHandler.saveCustomerListToFile();
         }
         else{
-            showAlert("No Book Selected", "Please select a book to delete.");
+            errorLabel.setText("Select a Customer to Delete");
         }
         
         
@@ -121,14 +136,6 @@ public class OwnerCustomersScreen extends Application {
         ownerStartScreen.start(currentStage);
     }
     
-    
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setContentText(message);
-        alert.show();
-    }
-
     public static void main(String[] args) {
         launch(args);
     }

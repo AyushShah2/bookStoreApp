@@ -3,7 +3,7 @@ package bookstoreapp;
 
 /**
  *
- * @author user
+ * @author Ayush Shah
  */
 public class Owner extends User{
     

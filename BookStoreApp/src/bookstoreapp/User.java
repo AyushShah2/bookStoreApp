@@ -2,7 +2,7 @@ package bookstoreapp;
 
 /**
  *
- * @author user
+ * @author Ayush Shah
  */
 abstract class User {
     String username;

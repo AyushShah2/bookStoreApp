@@ -3,7 +3,7 @@ package bookstoreapp;
 
 /**
  *
- * @author user
+ * @author Ayush Shah
  */
 public class Customer extends User{
     private int points;

@@ -5,12 +5,11 @@ import javafx.beans.property.BooleanProperty;
 
 /**
  *
- * @author user
+ * @author Ayush Shah
  */
 public class Book {
     private double bookPrice;
     private String bookName;
-    private boolean isBought;
     private BooleanProperty selected;
     
     public Book(String name, double price){
@@ -26,15 +25,7 @@ public class Book {
     public double getBookPrice(){
         return bookPrice;
     }
-    
-    public boolean isBookBought(){
-        return isBought;
-    }
-    
-    public void buyBook(){
-        isBought = true;
-    }
-    
+   
     public BooleanProperty selectedProperty() {
         return selected;
     }
@@ -46,5 +37,4 @@ public class Book {
     public void setSelected(boolean value) {
         selected.set(value);
     }
-    
 }

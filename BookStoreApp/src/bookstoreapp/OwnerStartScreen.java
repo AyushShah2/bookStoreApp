@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author user
+ * @author Ayush Shah
  */
 public class OwnerStartScreen extends Application {
     private static Owner currentUser;

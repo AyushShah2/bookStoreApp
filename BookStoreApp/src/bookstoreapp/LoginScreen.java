@@ -4,17 +4,13 @@ package bookstoreapp;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  *
- * @author user
+ * @author Ayush Shah
  */
 public class LoginScreen extends Application {
     private TextField usernameField;
@@ -58,8 +54,6 @@ public class LoginScreen extends Application {
             currentUser.login(username, password);
             
             if(currentUser.isLoggedIn()){
-                messageLabel.setText("Login successful as Owner");
-                System.out.println("Logged in as owner");
                 Stage ownerStage = (Stage) usernameField.getScene().getWindow();
                 
                 OwnerStartScreen ownerStartScreen = new OwnerStartScreen();
@@ -72,10 +66,7 @@ public class LoginScreen extends Application {
             currentUser.login(username, password);
 
             if(currentUser.isLoggedIn()){
-                bookstoreapp.FileHandler.getBookListFromFile();
-                messageLabel.setText("Login successful as " + username);
-                System.out.print("Logged in as " + username);
-                
+                bookstoreapp.FileHandler.getBookListFromFile();                
                 Stage customerStage = (Stage) usernameField.getScene().getWindow();
                 
                 CustomerStartScreen customerStartScreen = new CustomerStartScreen();
@@ -85,7 +76,8 @@ public class LoginScreen extends Application {
         } 
         else {
             messageLabel.setText("Invalid username or password");
-            System.out.print("Invalid username or password: " + username);
+            messageLabel.setStyle("-fx-text-fill: red;");
+
             usernameField.clear();
             passwordField.clear();
         }

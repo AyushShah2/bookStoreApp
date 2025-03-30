@@ -2,20 +2,17 @@ package bookstoreapp;
 
 import java.util.ArrayList;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 /**
  *
- * @author user
+ * @author Ayush Shah
  */
 public class CustomerCostScreen extends Application {
     private static Customer currentUser;

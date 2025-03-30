@@ -3,7 +3,7 @@ package bookstoreapp;
 
 /**
  *
- * @author user
+ * @author Ayush Shah
  */
 interface Status {
     double calculateFinalCost(Customer customer, double totalPrice);

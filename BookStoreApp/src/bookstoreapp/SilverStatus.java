@@ -2,7 +2,7 @@ package bookstoreapp;
 
 /**
  *
- * @author user
+ * @author Ayush Shah
  */
 public class SilverStatus implements Status {
     @Override

@@ -10,7 +10,7 @@ import javafx.scene.control.Alert;
 
 /**
  *
- * @author user
+ * @author Ayush Shah
  */
 public class FileHandler {
     private static ArrayList<Book> bookList = new ArrayList<Book>();
