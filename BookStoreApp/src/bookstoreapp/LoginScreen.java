@@ -2,16 +2,14 @@
 package bookstoreapp;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -24,8 +22,8 @@ public class LoginScreen extends Application {
     private Label messageLabel;
     
     @Override
-    public void start(Stage primaryStage) {
-        Label titleLabel = new Label("Book Store App Login");
+    public void start(Stage loginStage) {
+        Label titleLabel = new Label("Book Store Login");
         titleLabel.setStyle("-fx-font-size: 24px;");
         
         usernameField = new TextField();
@@ -45,9 +43,9 @@ public class LoginScreen extends Application {
         layout.setStyle("-fx-padding: 20; -fx-alignment: center;");
         
         Scene scene = new Scene(layout, 900, 600);
-        primaryStage.setTitle("Login Page");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        loginStage.setTitle("Book Store");
+        loginStage.setScene(scene);
+        loginStage.show();
     }
 
     private void handleLogin() {
@@ -60,9 +58,13 @@ public class LoginScreen extends Application {
             currentUser.login(username, password);
             
             if(currentUser.isLoggedIn()){
-                messageLabel.setText("Login successful as Owner"); //ADD IMPLEMENTATION TO GO TO OWNER PAGE
-                System.out.print("Logged in as owner");
-                //BREAK THIS CODE AND GO TO OWNER PAGE
+                messageLabel.setText("Login successful as Owner");
+                System.out.println("Logged in as owner");
+                Stage ownerStage = (Stage) usernameField.getScene().getWindow();
+                
+                OwnerStartScreen ownerStartScreen = new OwnerStartScreen();
+                ownerStartScreen.setUser(currentUser);
+                ownerStartScreen.start(ownerStage);
             }
         }
         else if (authenticateUser(username, password) != null) {
@@ -72,7 +74,6 @@ public class LoginScreen extends Application {
             if(currentUser.isLoggedIn()){
                 messageLabel.setText("Login successful as " + username); //ADD IMPLEMENTATION TO GO TO CUSTOMER PAGE
                 System.out.print("Logged in as " + username);
-                //BREAK THIS CODE AND GO TO CUSTOMER PAGE
             }
         } 
         else {
@@ -85,30 +86,13 @@ public class LoginScreen extends Application {
     }
     
     private Customer authenticateUser(String username, String password) {
-        File file = new File("customers.txt");
-
-        try (Scanner scanner = new Scanner(file)) {
-            while (scanner.hasNextLine()) {
-                String currentUsername = scanner.nextLine();
-                if (!scanner.hasNextLine()) break;
-                String currentPassword = scanner.nextLine();
-                if (!scanner.hasNextLine()) break; 
-                int currentPoints = Integer.parseInt(scanner.nextLine());
-
-                
-                if (currentUsername.equals(username) && currentPassword.equals(password)) {
-                    Customer existingCustomer = new Customer(currentUsername, currentPassword);
-                    existingCustomer.setPoints(currentPoints);
-                    return existingCustomer;
-                }
+        bookstoreapp.FileHandler.getCustomerListFromFile();
+        ArrayList<Customer> customerList = bookstoreapp.FileHandler.getCustomerList();
+        
+        for(Customer existingCustomer : customerList){
+            if ((existingCustomer.getUsername().equals(username)) && existingCustomer.getPassword().equals(password)){
+                return existingCustomer;
             }
-        } catch (FileNotFoundException e) {
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("ERROR");
-            alert.setHeaderText("customers.txt not found");
-            alert.showAndWait();
-        } catch (NumberFormatException e) {
-            messageLabel.setText("Error: Invalid points format in file");
         }
 
         return null;

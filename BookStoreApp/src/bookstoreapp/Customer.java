@@ -6,7 +6,7 @@ package bookstoreapp;
  * @author user
  */
 public class Customer extends User{
-    int points;
+    private int points;
     
     Customer(String username, String password){
         points = 0;
@@ -17,6 +17,10 @@ public class Customer extends User{
     @Override
     public String getUsername(){
         return username;
+    }
+    
+    public String getPassword(){
+        return password;
     }
     
     @Override
@@ -38,6 +42,10 @@ public class Customer extends User{
     
     public void setPoints(int points){
         this.points = points;
+    }
+    
+    public int getPoints(){
+        return points;
     }
     
 }
