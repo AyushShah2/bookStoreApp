@@ -99,6 +99,9 @@ public class OwnerBooksScreen extends Application {
             if(name.trim().equals("")){
                 throw new Exception();
             }
+            else if(isDuplicate(name)){
+                throw new Exception();
+            }
             price = Double.parseDouble(priceText);
             
             Book newBook = new Book(name, price);
@@ -116,6 +119,16 @@ public class OwnerBooksScreen extends Application {
         
         nameField.clear();
         priceField.clear();
+    }
+    
+    
+    private boolean isDuplicate(String name){
+        for (Book book : data){
+            if(book.getBookName().equals(name)){
+                return true;
+            }
+        }
+        return false;
     }
     
     private void deleteBook(){

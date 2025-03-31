@@ -105,6 +105,9 @@ public class OwnerCustomersScreen extends Application {
         else if(password.trim().equals("")){
             errorLabel.setText("Enter a Password");
         }
+        else if(isDuplicate(username)){
+                errorLabel.setText("This Username Already Exists");
+        }
         else{
             Customer newCustomer = new Customer(username, password);
             bookstoreapp.FileHandler.addCustomer(newCustomer);
@@ -127,8 +130,15 @@ public class OwnerCustomersScreen extends Application {
         else{
             errorLabel.setText("Select a Customer to Delete");
         }
-        
-        
+    }
+    
+     private boolean isDuplicate(String username){
+        for (Customer customer : data){
+            if(customer.getUsername().equals(username)){
+                return true;
+            }
+        }
+        return false;
     }
 
     private void goBackToOwnerStartScreen(Stage currentStage){
