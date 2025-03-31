@@ -41,7 +41,14 @@ To run this application, you need:
 ## Running the JAR File
 
 To run the `.jar` file on a system with Java 8 installed:
+    
 1. Open a terminal or command prompt.
+    - Temporarily use Java 8 by the following commands in Git Bash
+    
+    ```bash
+    export JAVA_HOME="C:/Program Files/Java/jdk1.8.0_281"
+    export PATH=$JAVA_HOME/bin:$PATH
+    
 2. Navigate to the folder containing the `.jar` file.
 3. Execute the following command:
 
